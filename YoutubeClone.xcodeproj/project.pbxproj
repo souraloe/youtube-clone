@@ -15,6 +15,9 @@
 		5811FBEE25CAF29100932F79 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5811FBEC25CAF29100932F79 /* LaunchScreen.storyboard */; };
 		58D42CF625CC718B007C62AA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D42CF525CC718B007C62AA /* Extensions.swift */; };
 		58D42CFB25CC71DA007C62AA /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D42CFA25CC71DA007C62AA /* VideoCell.swift */; };
+		58D42D0B25CD3EA1007C62AA /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D42D0A25CD3EA1007C62AA /* MenuBar.swift */; };
+		58D42D0E25CD4FDB007C62AA /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D42D0D25CD4FDB007C62AA /* UIViewExtension.swift */; };
+		58D42D1325CD795B007C62AA /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D42D1225CD795B007C62AA /* Video.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +31,9 @@
 		5811FBEF25CAF29100932F79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		58D42CF525CC718B007C62AA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		58D42CFA25CC71DA007C62AA /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
+		58D42D0A25CD3EA1007C62AA /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
+		58D42D0D25CD4FDB007C62AA /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		58D42D1225CD795B007C62AA /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +66,7 @@
 		5811FBE025CAF29000932F79 /* YoutubeClone */ = {
 			isa = PBXGroup;
 			children = (
+				58D42D1125CD794F007C62AA /* Model */,
 				58D42CFE25CC7208007C62AA /* Controller */,
 				58D42CF925CC71C9007C62AA /* Views */,
 				58D42CF425CC717D007C62AA /* Helpers */,
@@ -77,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				58D42CF525CC718B007C62AA /* Extensions.swift */,
+				58D42D0D25CD4FDB007C62AA /* UIViewExtension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -85,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				58D42CFA25CC71DA007C62AA /* VideoCell.swift */,
+				58D42D0A25CD3EA1007C62AA /* MenuBar.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -95,6 +104,14 @@
 				5811FBE525CAF29000932F79 /* HomeController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		58D42D1125CD794F007C62AA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				58D42D1225CD795B007C62AA /* Video.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,7 +186,10 @@
 			files = (
 				58D42CFB25CC71DA007C62AA /* VideoCell.swift in Sources */,
 				5811FBE625CAF29000932F79 /* HomeController.swift in Sources */,
+				58D42D0B25CD3EA1007C62AA /* MenuBar.swift in Sources */,
 				5811FBE225CAF29000932F79 /* AppDelegate.swift in Sources */,
+				58D42D0E25CD4FDB007C62AA /* UIViewExtension.swift in Sources */,
+				58D42D1325CD795B007C62AA /* Video.swift in Sources */,
 				5811FBE425CAF29000932F79 /* SceneDelegate.swift in Sources */,
 				58D42CF625CC718B007C62AA /* Extensions.swift in Sources */,
 			);
@@ -326,7 +346,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = yb.clone.vo;
+				PRODUCT_BUNDLE_IDENTIFIER = fb.clone.vo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -347,7 +367,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = yb.clone.vo;
+				PRODUCT_BUNDLE_IDENTIFIER = fb.clone.vo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

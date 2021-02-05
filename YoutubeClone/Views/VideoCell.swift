@@ -7,7 +7,7 @@
 
 import UIKit
 
-class VideoCell: UICollectionViewCell {
+class BaseCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         if self.traitCollection.userInterfaceStyle == .dark {
@@ -18,12 +18,55 @@ class VideoCell: UICollectionViewCell {
         setupViews()
     }
     
+    func setupViews() {
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class VideoCell: BaseCell {
+    
+    var video: Video? {
+        didSet {
+            titleLabel.text = video?.title
+            
+            thumbnailImageView.image = UIImage(named: (video?.thumbnailImageName)!)
+            
+            if let profileImageName = video?.channel?.profileImageName {
+                userProfileImageView.image = UIImage(named: profileImageName)
+            }
+            
+            if let channelName = video?.channel?.name, let numberOfViews = video?.numberOfViews {
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = .decimal
+                
+                let subtitleText = "\(channelName) • \(numberFormatter.string(from: numberOfViews)!) • 2 years ago"
+                subtitleTextView.text = subtitleText
+            }
+
+            //measure title text
+            if let title = video?.title {
+                let size = CGSize(width: frame.width - 16 - 44 - 8 - 16, height: 1000)
+                let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+                let estimatedRect = NSString(string: title).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], context: nil)
+                
+                if estimatedRect.size.height > 20 {
+                    titleLabelHeightConstraint?.constant = 44
+                } else {
+                    titleLabelHeightConstraint?.constant = 20
+                }
+            }
+        }
+    }
+    
     let thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "struct-image")
+        imageView.image = UIImage(named: "taylor_swift_bad_blood")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -33,67 +76,64 @@ class VideoCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 22
         imageView.layer.masksToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     let separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Taylor Swift - Blank Space"
+        label.numberOfLines = 2
         return label
     }()
     
     let subtitleTextView: UITextView = {
         let textView = UITextView()
-        textView.translatesAutoresizingMaskIntoConstraints = false
         textView.text = "TaylorSwiftVEVO • 1,604,684,607 views • 2 years ago"
         textView.textContainerInset = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 0)
         textView.textColor = .lightGray
         return textView
     }()
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    var titleLabelHeightConstraint: NSLayoutConstraint?
     
-    func setupViews() {
+    override func setupViews() {
         addSubview(thumbnailImageView)
         addSubview(separatorView)
         addSubview(userProfileImageView)
         addSubview(titleLabel)
         addSubview(subtitleTextView)
+        
+        thumbnailImageView.top(equalTo: self, constant: 16)
+        thumbnailImageView.leading(equalTo: self, constant: 16)
+        thumbnailImageView.trailing(equalTo: self, constant: 16)
+        thumbnailImageView.height(equalTo: self.frame.height - 104 )
+        
+        userProfileImageView.leading(equalTo: self, constant: 16)
+        userProfileImageView.top(equalTo: thumbnailImageView.bottomAnchor, constant: 8)
+        userProfileImageView.height(equalTo: 44)
+        userProfileImageView.width(equalTo: 44)
+        
+        separatorView.height(equalTo: 1)
+        separatorView.leading(equalTo: self)
+        separatorView.trailing(equalTo: self)
+        separatorView.bottom(equalTo: self)
+        
+        titleLabel.top(equalTo: thumbnailImageView.bottomAnchor, constant: 8)
+        titleLabel.leading(equalTo: userProfileImageView.trailingAnchor, constant: 8)
+        titleLabel.trailing(equalTo: thumbnailImageView)
+         
+        titleLabelHeightConstraint = titleLabel.heightAnchor.constraint(equalToConstant: 44)
+        titleLabelHeightConstraint?.isActive = true
 
-        thumbnailImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16).isActive = true
-        thumbnailImageView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16).isActive = true
-        thumbnailImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16).isActive = true
-        thumbnailImageView.heightAnchor.constraint(equalToConstant: self.frame.height - 84).isActive = true
-        
-        userProfileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16).isActive = true
-        userProfileImageView.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8).isActive = true
-        userProfileImageView.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        userProfileImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        
-        separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        separatorView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
-        separatorView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
-        separatorView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
-        
-        titleLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8).isActive = true
-        titleLabel.leftAnchor.constraint(equalTo: userProfileImageView.rightAnchor, constant: 8).isActive = true
-        titleLabel.rightAnchor.constraint(equalTo: thumbnailImageView.rightAnchor, constant: 0).isActive = true
-        titleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-
-        subtitleTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
-        subtitleTextView.leftAnchor.constraint(equalTo: userProfileImageView.rightAnchor, constant: 8).isActive = true
-        subtitleTextView.rightAnchor.constraint(equalTo: thumbnailImageView.rightAnchor, constant: 0).isActive = true
-        subtitleTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        subtitleTextView.top(equalTo: titleLabel.bottomAnchor, constant: 4)
+        subtitleTextView.leading(equalTo: userProfileImageView.trailingAnchor, constant: 8)
+        subtitleTextView.trailing(equalTo: self)
+        subtitleTextView.height(equalTo: 30)
     }
 }

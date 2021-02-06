@@ -33,11 +33,9 @@ class VideoCell: BaseCell {
         didSet {
             titleLabel.text = video?.title
             
-            thumbnailImageView.image = UIImage(named: (video?.thumbnailImageName)!)
+            setupThumbnailImage()
             
-            if let profileImageName = video?.channel?.profileImageName {
-                userProfileImageView.image = UIImage(named: profileImageName)
-            }
+            setupProfileImage()
             
             if let channelName = video?.channel?.name, let numberOfViews = video?.numberOfViews {
                 let numberFormatter = NumberFormatter()
@@ -62,17 +60,27 @@ class VideoCell: BaseCell {
         }
     }
     
-    let thumbnailImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "taylor_swift_bad_blood")
+    func setupThumbnailImage() {
+        if let thumbnailImageUrl = video?.thumbnailImageName {
+            thumbnailImageView.load(urlString: thumbnailImageUrl)
+        }
+    }
+    
+    func setupProfileImage() {
+        if let profileImageUrl = video?.channel?.profileImageName {
+            userProfileImageView.load(urlString: profileImageUrl)
+        }
+    }
+    
+    let thumbnailImageView: CustomImageView = {
+        let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView
     }()
     
-    let userProfileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "profile-image")
+    let userProfileImageView: CustomImageView = {
+        let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 22
         imageView.layer.masksToBounds = true
@@ -81,13 +89,12 @@ class VideoCell: BaseCell {
     
     let separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
+        view.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 0.5)
         return view
     }()
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Taylor Swift - Blank Space"
         label.numberOfLines = 2
         return label
     }()
@@ -135,5 +142,33 @@ class VideoCell: BaseCell {
         subtitleTextView.leading(equalTo: userProfileImageView.trailingAnchor, constant: 8)
         subtitleTextView.trailing(equalTo: self)
         subtitleTextView.height(equalTo: 30)
+    }
+}
+
+let imageCache = NSCache<NSString, UIImage>()
+
+class CustomImageView: UIImageView {
+    var imageUrlString: String?
+
+    func load(urlString: String) {
+        
+        imageUrlString = urlString
+        
+        if let imageFromCache = imageCache.object(forKey: urlString as NSString) {
+            self.image = imageFromCache
+        } else if let url = URL(string: urlString) {
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                if let data = try? Data(contentsOf: url) {
+                    if let imageToCache = UIImage(data: data) {
+                        if self?.imageUrlString == urlString {
+                            imageCache.setObject(imageToCache, forKey: urlString as NSString)
+                        }
+                        DispatchQueue.main.async {
+                            self?.image = imageToCache
+                        }
+                    }
+                }
+            }
+        }
     }
 }

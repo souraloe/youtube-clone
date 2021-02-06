@@ -7,8 +7,7 @@
 
 import UIKit
 
-class Video: NSObject {
-    
+class Video {
     var thumbnailImageName: String?
     var title: String?
     var numberOfViews: NSNumber?
@@ -17,7 +16,7 @@ class Video: NSObject {
     var channel: Channel?
 }
 
-class Channel: NSObject {
+class Channel {
     var name: String?
     var profileImageName: String?
 }
